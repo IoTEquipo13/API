@@ -26,13 +26,32 @@ namespace KaronAPI.Controllers
             return Task.FromResult("OK!");
         }
 
-        public Task<bool> RegisterPlate(string plate)
+        [HttpGet]
+        public async Task<IActionResult> GetUser(string Id)
         {
-            return Task.FromResult(true);
+            var userId = await userMethods.Search(Id);
+            return Json(userId);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPlate(string id,[FromBody]string Plate)
+        {
+            var user = await userMethods.Get(id);
+
+            user.Plate.Add(Plate);
+
+            if(await userMethods.Update(user, id))
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json(false);
+            }
         }
         
         [HttpPost]
-        public async Task<string> Register([FromBody] UserVM user)
+        public async Task<IActionResult> Register([FromBody] UserVM user)
         {
             if (ModelState.IsValid)
             {
@@ -42,7 +61,7 @@ namespace KaronAPI.Controllers
 
                 foreach (var day in user.PrefSegment)
                 {
-                    prefs.Add((DayOfWeek)Enum.Parse(typeof(DayOfWeek), day.ToString()), day.Value.ToString());
+                    prefs.Add((DayOfWeek)Enum.Parse(typeof(DayOfWeek), day.Key.ToString()), day.Value.ToString());
                 }
 
                 var newUser = new User
@@ -57,17 +76,17 @@ namespace KaronAPI.Controllers
                 var id = await userMethods.Create(newUser);
                 if (id != null)
                 {
-                    return id;
+                    return Json(id);
                 }
                 else
                 {
-                    return "Sorry";
+                    return Json("Sorry");
                 }
 
             }
             else
             {
-                return "Sorry";
+                return Json("Sorry");
             }
         }
     }

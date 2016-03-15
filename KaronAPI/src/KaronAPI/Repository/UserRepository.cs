@@ -26,19 +26,65 @@ namespace KaronAPI.Repository
             });
         }
 
-		public Task<string> Create(User user)
+        public async Task<bool> Update(User user, string Id)
         {
-            var response = client.Push("Users/", user);
+            var response = await client.UpdateAsync($"Users/{Id}", user);
+            if(response.StatusCode.ToString() == "OK")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<string> Create(User user)
+        {
+            var response = await client.PushAsync("Users/", user);
 			if(response.StatusCode.ToString() == "OK")
             {
                 JObject id = response.ResultAs<JObject>();
                 string name = id["name"].ToString();
-                return Task.FromResult(name);
+                return name;
             }
             else
             {
-                return Task.FromResult("Sorry");
+                return "Sorry";
             }
+        }
+
+        public async Task<User> Get(string id)
+        {
+            var response = await client.GetAsync($"Users/{id}");
+            var user = response.ResultAs<User>();
+            return user;
+        }
+
+        public async Task<Dictionary<string, User>> Get()
+        {
+            var response = await client.GetAsync($"Users/");
+            var user = response.ResultAs<Dictionary<string, User>>();
+            return user;
+        }
+
+        public async Task<string> Search(string plate)
+        {
+            var users = await Get();
+            string id = "none";
+
+            Parallel.ForEach(users, user =>
+            {
+                Parallel.ForEach(user.Value.Plate, userPlate =>
+                {
+                    if (plate == userPlate)
+                    {
+                        id = user.Key;
+                    }
+                });
+            });
+
+            return id;
         }
     }
 }
