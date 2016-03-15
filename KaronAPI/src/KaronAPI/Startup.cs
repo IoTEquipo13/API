@@ -50,8 +50,12 @@ namespace KaronAPI
             app.UseApplicationInsightsRequestTelemetry();
             app.UseApplicationInsightsExceptionTelemetry();
             app.UseStaticFiles();
+
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "MainRoute",
+                    template: "{controller}/{action}/{id?}");
                 routes.MapWebApiRoute(
                     name: "ApiRoute",
                     template: "api/{controller}/{action}/{id?}");

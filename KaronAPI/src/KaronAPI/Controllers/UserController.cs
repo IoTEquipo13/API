@@ -10,7 +10,6 @@ using Microsoft.Net.Http.Headers;
 using KaronAPI.Interfaces;
 using KaronAPI.ViewModel;
 using KaronAPI.Models;
-using Newtonsoft.Json.Linq;
 
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -32,30 +31,20 @@ namespace KaronAPI.Controllers
             return Task.FromResult(true);
         }
         
-        public async Task<string> Register(UserVM user)
+        [HttpPost]
+        public async Task<string> Register([FromBody] UserVM user)
         {
-            byte[] request = new byte[1000];
-            var bytes = Request.Body.ReadAsync(request, 0, 1000).Result;
-            JObject obj = new JObject(System.Text.Encoding.UTF8.GetString(request));
-            var usrmv = obj.ToObject<UserVM>();
-
-            Console.WriteLine(usrmv.Condition);
-            
             if (ModelState.IsValid)
             {
                 var prefs = new Dictionary<DayOfWeek, string>();
                 var plate = new List<string>();
                 plate.Add(user.Plate);
-                /*
-                for (int i = 0; i < user.Days.Count; i++)
+
+                foreach (var day in user.PrefSegment)
                 {
-                    var day = user.Days[i];
-                    if (day != "null")
-                    {
-                        prefs.Add((DayOfWeek)Enum.Parse(typeof(DayOfWeek), day.ToString()), user.PrefSegment[i]);
-                    }
+                    prefs.Add((DayOfWeek)Enum.Parse(typeof(DayOfWeek), day.ToString()), day.Value.ToString());
                 }
-                */
+
                 var newUser = new User
                 {
                     Condition = user.Condition,
@@ -78,7 +67,6 @@ namespace KaronAPI.Controllers
             }
             else
             {
-                Console.WriteLine("Exception");
                 return "Sorry";
             }
         }
