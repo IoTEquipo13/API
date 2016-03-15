@@ -40,7 +40,6 @@ namespace KaronAPI.Controllers
             var usrmv = obj.ToObject<UserVM>();
 
             Console.WriteLine(usrmv.Condition);
-            
             if (ModelState.IsValid)
             {
                 var prefs = new Dictionary<DayOfWeek, string>();
