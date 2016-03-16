@@ -12,8 +12,8 @@ to get the URL and Secret from Firebase. the file should be written as follows.
 
 ```json
 {
-    Url:"<yourFirebaseUrl>",
-    Secret:"<yourFirebaseSecret"
+    "Url":"<yourFirebaseUrl>",
+    "Secret":"<yourFirebaseSecret>"
 }
 ```
 
