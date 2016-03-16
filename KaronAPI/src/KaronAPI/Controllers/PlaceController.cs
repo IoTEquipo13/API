@@ -25,8 +25,14 @@ namespace KaronAPI.Controllers
             var user = await userMethods.Search(Id);
             var preferedZone = await placesMethods.Search(user);
             var place = await placesMethods.Get(preferedZone);
-            
-            return Json(place);
+            if(place != 1000000000)
+            {
+                if(await placesMethods.Save(preferedZone[0], place))
+                {
+                    return Json(preferedZone[0]);
+                }
+            }
+            return Json("none!");
         } 
     }
 }

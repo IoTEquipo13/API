@@ -58,7 +58,7 @@ namespace KaronAPI.Repository
         {
             var response = await client.GetAsync($"Parkinglot/ITESMGDA/{preferences[0]}/Places/");
             var segment = response.ResultAs<List<Place>>();
-            int segmentId = 0;
+            int segmentId = 1000000000;
             Parallel.For(0, segment.Count, i =>
             {
                 if ((segment[i].Status == 0) && (segment[i].Type == preferences[1]))
@@ -66,7 +66,15 @@ namespace KaronAPI.Repository
                     segmentId = i;
                 }
             });
-            return segmentId;
+
+            if(segmentId != 1000000000)
+            {
+                return segmentId;
+            }
+            else
+            {
+                return 1000000000;
+            }
         }
 
         public async Task<Place> Get(string device, int place)
@@ -74,6 +82,17 @@ namespace KaronAPI.Repository
             var response = await client.GetAsync($"Parkinglot/ITESMGDA/{device}/Places/{place}/");
             var space = response.ResultAs<Place>();
             return space;
+        }
+
+        public async Task<bool> Save(string zone, int place)
+        {
+            var place2 = await Get(zone, place);
+            place2.Status = 2;
+            if(await Update(place2, zone, place))
+            {
+                return true;
+            }
+            return false;
         }
 
     }

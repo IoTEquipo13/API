@@ -13,5 +13,6 @@ namespace KaronAPI.Interfaces
         Task<int> Get(List<string> preferences);
         Task<Place> Get(string device, int place);
         Task<bool> Update(Place place, string device, int placeId);
+        Task<bool> Save(string zone, int place);
     }
 }
