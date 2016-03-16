@@ -39,7 +39,8 @@ namespace KaronAPI
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.Configure<FirebaseService>(Configuration);
-            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPlaceRepository, PlaceRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

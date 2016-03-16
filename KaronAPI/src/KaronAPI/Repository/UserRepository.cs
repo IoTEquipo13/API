@@ -68,10 +68,10 @@ namespace KaronAPI.Repository
             return user;
         }
 
-        public async Task<string> Search(string plate)
+        public async Task<User> Search(string plate)
         {
             var users = await Get();
-            string id = "none";
+            User id = new User();
 
             Parallel.ForEach(users, user =>
             {
@@ -79,7 +79,7 @@ namespace KaronAPI.Repository
                 {
                     if (plate == userPlate)
                     {
-                        id = user.Key;
+                        id = user.Value;
                     }
                 });
             });

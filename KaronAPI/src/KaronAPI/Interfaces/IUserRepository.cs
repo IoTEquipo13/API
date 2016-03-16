@@ -12,6 +12,6 @@ namespace KaronAPI.Interfaces
         Task<string> Create(User user);
         Task<User> Get(string id);
         Task<bool> Update(User user, string Id);
-        Task<string> Search(string plate);
+        Task<User> Search(string plate);
     }
 }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KaronAPI.Models
+namespace KaronAPI.Interfaces
 {
-    public class Segment
+    public interface IDeviceRepository
     {
-        public Dictionary<int, Place> Places { get; set; }
+
     }
 }

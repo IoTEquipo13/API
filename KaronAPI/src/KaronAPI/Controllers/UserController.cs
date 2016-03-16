@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Http;
-using System.IO;
-using Microsoft.Net.Http.Headers;
 
 using KaronAPI.Interfaces;
 using KaronAPI.ViewModel;
@@ -24,6 +20,14 @@ namespace KaronAPI.Controllers
         public Task<string> Test()
         {
             return Task.FromResult("OK!");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetParking(string Id)
+        {
+
+
+            return Json("");
         }
 
         [HttpGet]

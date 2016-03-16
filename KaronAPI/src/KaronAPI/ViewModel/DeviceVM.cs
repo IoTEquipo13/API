@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KaronAPI.Models
+namespace KaronAPI.ViewModel
 {
-    public class Place
+    public class DeviceVM
     {
+        public string DeviceId { get; set; }
+        public int PlaceId { get; set; }
         public int Status { get; set; }
-        public string Type { get; set; }
     }
 }
