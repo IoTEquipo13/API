@@ -49,4 +49,6 @@ It can be runned with the Kestrel web server but I recommend using IIS unless th
 Use
 ====
 
-This API have various endpoints, those will be published on a Google doc, 
+This API have various endpoints, those will be published on a Google doc, this file has all the endpoints that the API has, also how 
+the JSON should be written, some endpoints have a note, those are to specify diffent scenarios. 
+[These is the Url to the ]
