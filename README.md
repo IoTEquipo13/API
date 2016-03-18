@@ -51,4 +51,4 @@ Use
 
 This API have various endpoints, those will be published on a Google doc, this file has all the endpoints that the API has, also how 
 the JSON should be written, some endpoints have a note, those are to specify diffent scenarios. 
-[These is the Url to the ]
+[These is the Url to the Google Doc ](https://docs.google.com/document/d/1iUiO_sLul3Ki-qZamP-f1FqXhNyQuRVdYHVw8L2SAzM/edit?usp=sharing)
