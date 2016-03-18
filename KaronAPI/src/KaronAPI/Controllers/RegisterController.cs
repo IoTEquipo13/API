@@ -9,6 +9,7 @@ using Microsoft.Extensions.OptionsModel;
 using System.Net;
 using System.Net.Http;
 
+using KaronAPI.Interfaces;
 using KaronAPI.Models;
 using KaronAPI.Services;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,6 +18,9 @@ namespace KaronAPI.Controllers
 {
     public class RegisterController : Controller
     {
+        [FromServices]
+        public IUserRepository userRepo { get; set; }
+
         private NotificationHubClient hub;
 
         public RegisterController()
@@ -33,7 +37,7 @@ namespace KaronAPI.Controllers
 
         // POST api/register
         // This creates a registration id
-        public async Task<string> Post([FromBody] string handle = null)
+        public async Task<string> Post(string Id, [FromBody] string handle)
         {
             string newRegistrationId = null;
 
@@ -58,7 +62,18 @@ namespace KaronAPI.Controllers
             if (newRegistrationId == null)
                 newRegistrationId = await hub.CreateRegistrationIdAsync();
 
-            return newRegistrationId;
+            var user = await userRepo.Get(Id);
+            user.NotificationId = newRegistrationId;
+            if (await userRepo.Update(user, Id))
+            {
+                await Put(newRegistrationId, new DeviceRegistration
+                {
+                    Handle = handle,
+                    Platform = "gcm"
+                });
+                return newRegistrationId;
+            }
+            return "something went wrong";
         }
 
         // PUT api/register/5
@@ -85,7 +100,7 @@ namespace KaronAPI.Controllers
             registration.RegistrationId = id;
 
             // add check if user is allowed to add these tags
-            registration.Tags = new HashSet<string>(new string[] { "Estudiante" });
+            registration.Tags = new HashSet<string>(new string[] { id });
 
             try
             {

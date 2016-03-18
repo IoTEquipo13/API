@@ -13,5 +13,6 @@ namespace KaronAPI.Models
         public string Mail { get; set; }
         public Dictionary<DayOfWeek,string> PrefSegment { get; set; }
         public string Condition { get; set; }
+        public string NotificationId { get; set; }
     }
 }

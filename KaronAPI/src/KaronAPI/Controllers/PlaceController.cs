@@ -19,6 +19,8 @@ namespace KaronAPI.Controllers
         [FromServices]
         public IUserRepository userMethods { get; set; }
 
+        private NotificationsController notiController = new NotificationsController();
+
         [HttpGet]
         public async Task<IActionResult> GetZone(string Id)
         {   
@@ -29,6 +31,7 @@ namespace KaronAPI.Controllers
             {
                 if(await placesMethods.Save(preferedZone[0], place))
                 {
+                    await notiController.Post("gcm", preferedZone[0], user.NotificationId);
                     return Json(preferedZone[0]);
                 }
             }

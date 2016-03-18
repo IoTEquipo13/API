@@ -15,7 +15,7 @@ namespace KaronAPI.Models
         private Notifications()
         {
             Hub = NotificationHubClient
-                .CreateClientFromConnectionString("<yourEndpoint>","<yourHubName>");
+                .CreateClientFromConnectionString("<yourEndpoint>", "<yourHubName>");
         }
     }
 }

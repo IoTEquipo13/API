@@ -13,12 +13,8 @@ namespace KaronAPI.Controllers
 {
     public class NotificationsController : Controller
     {
-        public async Task<IActionResult> Post(string Id,string pns, [FromBody]string message, string to_tag)
+        public async Task<IActionResult> Post(string pns, [FromBody]string message, string to_tag)
         {
-            var user = Id;
-            string[] userTag = new string[2];
-            userTag[0] = "username:" + to_tag;
-            userTag[1] = "from:" + user;
 
             Microsoft.Azure.NotificationHubs.NotificationOutcome outcome = null;
             HttpStatusCode ret = HttpStatusCode.InternalServerError;
@@ -28,18 +24,18 @@ namespace KaronAPI.Controllers
                 case "wns":
                     // Windows 8.1 / Windows Phone 8.1
                     var toast = @"<toast><visual><binding template=""ToastText01""><text id=""1"">" +
-                                "From " + user + ": " + message + "</text></binding></visual></toast>";
-                    outcome = await Notifications.Instance.Hub.SendWindowsNativeNotificationAsync(toast, userTag);
+                                "From : " + message + "</text></binding></visual></toast>";
+                    outcome = await Notifications.Instance.Hub.SendWindowsNativeNotificationAsync(toast, to_tag);
                     break;
                 case "apns":
                     // iOS
-                    var alert = "{\"aps\":{\"alert\":\"" + "From " + user + ": " + message + "\"}}";
-                    outcome = await Notifications.Instance.Hub.SendAppleNativeNotificationAsync(alert, userTag);
+                    var alert = "{\"aps\":{\"alert\":\"" + "Your zone is" + message + "\"}}";
+                    outcome = await Notifications.Instance.Hub.SendAppleNativeNotificationAsync(alert, to_tag);
                     break;
                 case "gcm":
                     // Android
-                    var notif = "{ \"data\" : {\"message\":\"" + "From " + user + ": " + message + "\"}}";
-                    outcome = await Notifications.Instance.Hub.SendGcmNativeNotificationAsync(notif, userTag);
+                    var notif = "{ \"data\" : {\"message\":\"" + message + "\"}}";
+                    outcome = await Notifications.Instance.Hub.SendGcmNativeNotificationAsync(notif, to_tag);
                     break;
             }
 
