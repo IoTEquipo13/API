@@ -43,6 +43,7 @@ namespace KaronAPI.Models
 
 To be able to compile you also need to install ASP.NET Core 1.0, the runtime version is 1.0.0-rc1-update1
 These version must be hosted on a Windos Server, it uses the Firesharp library, which is only supported on the full .NET Framework.
+All of these can be downloaded from the [ASP.NET/Home repo.](https://github.com/aspnet/Home)
 
 It can be runned with the Kestrel web server but I recommend using IIS unless the console is needed for debbuging.
 
